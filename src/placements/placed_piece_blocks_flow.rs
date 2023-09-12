@@ -68,7 +68,7 @@ impl<'a> PlacedPieceBlocksFlow<'a> {
 
                     let placed_piece_blocks = self.refs[bit.trailing_zeros() as usize];
 
-                    if let Some(_) = placed_piece_blocks.place_according_to(board) {
+                    if placed_piece_blocks.place_according_to(board).is_some() {
                         self.results.push(placed_piece_blocks);
 
                         if next_remaining == 0 {
@@ -422,7 +422,7 @@ impl<'a> PlacedPieceBlocksFlow<'a> {
         let mut board = self.initial_board;
 
         for &placed_piece_blocks in self.refs.iter() {
-            if let Some(_) = placed_piece_blocks.place_according_to(board) {
+            if placed_piece_blocks.place_according_to(board).is_some() {
                 board.set_all(&placed_piece_blocks.locations);
             } else {
                 return false;

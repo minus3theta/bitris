@@ -44,10 +44,10 @@ impl<'a, T> MoveRules<'a, T> where T: RotationSystem {
     pub fn generate_all_moves(&self, board: Board64, spawn: BlPlacement) -> Vec<BlPlacement> {
         let result = match self.allow_move {
             AllowMove::Softdrop => {
-                moves64::all_moves_softdrop(self.rotation_system, &board.into(), spawn.into())
+                moves64::all_moves_softdrop(self.rotation_system, &board, spawn)
             }
             AllowMove::Harddrop => {
-                moves64::all_moves_harddrop(self.rotation_system, &board.into(), spawn.into())
+                moves64::all_moves_harddrop(self.rotation_system, &board, spawn)
             }
         };
         result.vec()
@@ -62,10 +62,10 @@ impl<'a, T> MoveRules<'a, T> where T: RotationSystem {
     pub fn generate_minimized_moves(&self, board: Board64, spawn: BlPlacement) -> Vec<BlPlacement> {
         let result = match self.allow_move {
             AllowMove::Softdrop => {
-                moves64::minimized_moves_softdrop(self.rotation_system, &board.into(), spawn.into())
+                moves64::minimized_moves_softdrop(self.rotation_system, &board, spawn)
             }
             AllowMove::Harddrop => {
-                moves64::minimized_moves_harddrop(self.rotation_system, &board.into(), spawn.into())
+                moves64::minimized_moves_harddrop(self.rotation_system, &board, spawn)
             }
         };
         result.vec()
@@ -103,7 +103,7 @@ impl<'a, T> MoveRules<'a, T> where T: RotationSystem {
     /// assert!(!srs_harddrop.can_reach(S.with(North).with(bl(2, 0)), board, spawn));
     /// ```
     pub fn can_reach(&self, goal: BlPlacement, board: Board64, spawn: BlPlacement) -> bool {
-        let (goal, board, spawn): (BlPlacement, Board64, BlPlacement) = (goal.into(), board.into(), spawn.into());
+        let (goal, board, spawn): (BlPlacement, Board64, BlPlacement) = (goal, board, spawn);
         assert_eq!(goal.piece.shape, spawn.piece.shape);
 
         if !goal.can_place_on(&board) {
@@ -112,10 +112,10 @@ impl<'a, T> MoveRules<'a, T> where T: RotationSystem {
 
         match self.allow_move {
             AllowMove::Softdrop => {
-                moves64::can_reach_softdrop(self.rotation_system, goal, &board.into(), spawn)
+                moves64::can_reach_softdrop(self.rotation_system, goal, &board, spawn)
             }
             AllowMove::Harddrop => {
-                moves64::can_reach_harddrop(self.rotation_system, goal, &board.into(), spawn)
+                moves64::can_reach_harddrop(self.rotation_system, goal, &board, spawn)
             }
         }
     }
@@ -130,10 +130,10 @@ impl<'a, T> MoveRules<'a, T> where T: RotationSystem {
 
         match self.allow_move {
             AllowMove::Softdrop => {
-                moves64::can_reach_strictly_softdrop(self.rotation_system, goal, &board.into(), spawn)
+                moves64::can_reach_strictly_softdrop(self.rotation_system, goal, &board, spawn)
             }
             AllowMove::Harddrop => {
-                moves64::can_reach_strictly_harddrop(self.rotation_system, goal, &board.into(), spawn)
+                moves64::can_reach_strictly_harddrop(self.rotation_system, goal, &board, spawn)
             }
         }
     }

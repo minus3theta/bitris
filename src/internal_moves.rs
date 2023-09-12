@@ -67,7 +67,7 @@ pub(crate) mod moves64 {
                 let piece_blocks = piece.to_piece_blocks();
                 for offset in piece_blocks.offsets {
                     Self::keep_if_offset_dest_is_free(
-                        &mut dest.boards[piece.orientation as usize], offset - piece_blocks.bottom_left, &free_board,
+                        &mut dest.boards[piece.orientation as usize], offset - piece_blocks.bottom_left, free_board,
                     );
                 }
             }
@@ -85,7 +85,7 @@ pub(crate) mod moves64 {
 
             for x in 0..10 {
                 let offset_x = x as i32 + offset.dx;
-                if 0 <= offset_x && offset_x < 10 {
+                if (0..10).contains(&offset_x) {
                     // All `free_piece_board.cols` bits are initialized as 1.
                     // Then, if all four block offsets are free, it is determined that there is space to place the piece.
                     free_piece_board.cols[x] &= free_board.cols[offset_x as usize] >> offset.dy;
@@ -153,7 +153,7 @@ pub(crate) mod moves64 {
 
         #[inline]
         pub fn count_ones(&self) -> u32 {
-            self.cols.iter().map(|col| col.count_ones()).fold(0, |sum, it| sum + it)
+            self.cols.iter().map(|col| col.count_ones()).sum::<u32>()
         }
     }
 
@@ -181,7 +181,7 @@ pub(crate) mod moves64 {
 
             for rotation in [Rotation::Cw, Rotation::Ccw] {
                 self.mark_spawn_and_its_post_rotations_with_rotation(
-                    spawn, rotation, rotation_times, &free_piece_boards, rotation_system,
+                    spawn, rotation, rotation_times, free_piece_boards, rotation_system,
                 );
             }
         }
@@ -299,7 +299,7 @@ pub(crate) mod moves64 {
                 let bl_offset = to.bottom_left - from.bottom_left;
 
                 // Exclude previously checked positions from reachable positions.
-                let mut candidates_board = self.boards[from.piece.orientation as usize].clone();
+                let mut candidates_board = self.boards[from.piece.orientation as usize];
                 candidates_board.remove(&previous_pre_rotation.boards[from.piece.orientation as usize]);
 
                 // For each kick, check to see if it can rotate from the candidate position.
@@ -314,7 +314,7 @@ pub(crate) mod moves64 {
 
                     let to = to.piece.orientation as usize;
                     let dx = offset.dx;
-                    let dy = offset.dy.abs() as usize;
+                    let dy = offset.dy.unsigned_abs() as usize;
 
                     let (start, end) = if 0 <= dx {
                         (0, 10 - dx as usize)
@@ -394,7 +394,7 @@ pub(crate) mod moves64 {
         pub fn count_ones(&self) -> u32 {
             self.boards.iter()
                 .map(|board| board.count_ones())
-                .fold(0, |sum, count| sum + count)
+                .sum::<u32>()
         }
     }
 
@@ -440,16 +440,16 @@ pub(crate) mod moves64 {
         let mut reachable_piece_boards = ReachablePieceBoards::non_reach();
 
         // Harddrop moving
-        reachable_piece_boards.mark_spawn_and_its_post_rotations(spawn, 2, &free_piece_boards, rotation_system);
+        reachable_piece_boards.mark_spawn_and_its_post_rotations(spawn, 2, free_piece_boards, rotation_system);
 
         // Preparation: At least cover the positions reachable by harddrop.
         // In the beginning, changes will almost certainly occur.
         // Thus, predefined operations are applied before the loop.
         {
-            reachable_piece_boards.update_by_moving_right(&free_piece_boards);
-            reachable_piece_boards.update_by_moving_left(&free_piece_boards);
+            reachable_piece_boards.update_by_moving_right(free_piece_boards);
+            reachable_piece_boards.update_by_moving_left(free_piece_boards);
 
-            reachable_piece_boards.update_by_moving_harddrop(&free_piece_boards);
+            reachable_piece_boards.update_by_moving_harddrop(free_piece_boards);
         }
 
         // Expand the reachable area without using rotation.
@@ -459,11 +459,11 @@ pub(crate) mod moves64 {
                 return reachable_piece_boards;
             }
 
-            let freeze = reachable_piece_boards.clone();
+            let freeze = reachable_piece_boards;
 
-            reachable_piece_boards.update_by_moving_right(&free_piece_boards);
-            reachable_piece_boards.update_by_moving_left(&free_piece_boards);
-            reachable_piece_boards.update_by_moving_softdrop(&free_piece_boards);
+            reachable_piece_boards.update_by_moving_right(free_piece_boards);
+            reachable_piece_boards.update_by_moving_left(free_piece_boards);
+            reachable_piece_boards.update_by_moving_softdrop(free_piece_boards);
 
             if freeze == reachable_piece_boards {
                 break;
@@ -486,10 +486,10 @@ pub(crate) mod moves64 {
 
             // These boards have positions in the previous pre-rotation.
             // These boards is used to cut positions that have already been checked rotation.
-            let previous_pre_rotation = freeze.clone();
+            let previous_pre_rotation = freeze;
 
             // Save boards before operations.
-            freeze = reachable_piece_boards.clone();
+            freeze = reachable_piece_boards;
 
             // First, it starts with rotation operations, as it does not change except for rotation already.
             // Positions that have already been checked are skipped in the calculation.
@@ -497,18 +497,18 @@ pub(crate) mod moves64 {
             // Precisely, the previous positions of each rotation should be recorded.
             // However, copying also takes time, so it approximates by the board at the start of the last loop (before the last rotation).
             reachable_piece_boards.update_by_rotating(
-                spawn.piece.shape, Rotation::Cw, &free_piece_boards, &previous_pre_rotation, rotation_system,
+                spawn.piece.shape, Rotation::Cw, free_piece_boards, &previous_pre_rotation, rotation_system,
             );
             reachable_piece_boards.update_by_rotating(
-                spawn.piece.shape, Rotation::Ccw, &free_piece_boards, &previous_pre_rotation, rotation_system,
+                spawn.piece.shape, Rotation::Ccw, free_piece_boards, &previous_pre_rotation, rotation_system,
             );
 
             // Apply from down because it's faster when there are fewer changes.
-            reachable_piece_boards.update_by_moving_softdrop(&free_piece_boards);
+            reachable_piece_boards.update_by_moving_softdrop(free_piece_boards);
 
             // The side moving operations is needed to assure that no changes occur.
-            reachable_piece_boards.update_by_moving_right(&free_piece_boards);
-            reachable_piece_boards.update_by_moving_left(&free_piece_boards);
+            reachable_piece_boards.update_by_moving_right(free_piece_boards);
+            reachable_piece_boards.update_by_moving_left(free_piece_boards);
 
             if freeze == reachable_piece_boards {
                 break;
@@ -528,14 +528,14 @@ pub(crate) mod moves64 {
         assert!(free_piece_boards.is_free(spawn.piece.orientation, spawn.position));
 
         let mut reachable_piece_boards = ReachablePieceBoards::non_reach();
-        reachable_piece_boards.mark_spawn_and_its_post_rotations(spawn, 2, &free_piece_boards, rotation_system);
+        reachable_piece_boards.mark_spawn_and_its_post_rotations(spawn, 2, free_piece_boards, rotation_system);
 
         // Left and Right
-        reachable_piece_boards.update_by_moving_right(&free_piece_boards);
-        reachable_piece_boards.update_by_moving_left(&free_piece_boards);
+        reachable_piece_boards.update_by_moving_right(free_piece_boards);
+        reachable_piece_boards.update_by_moving_left(free_piece_boards);
 
         // Harddrop
-        reachable_piece_boards.update_by_moving_harddrop(&free_piece_boards);
+        reachable_piece_boards.update_by_moving_harddrop(free_piece_boards);
 
         reachable_piece_boards
     }
@@ -599,7 +599,7 @@ pub(crate) mod moves64 {
     }
 
     pub(crate) fn can_reach_softdrop(rotation_system: &impl RotationSystem, goal: BlPlacement, board: &Board<u64>, spawn: BlPlacement) -> bool {
-        let free_board = FreeBoard::from(&board);
+        let free_board = FreeBoard::from(board);
         let free_piece_boards = FreePieceBoards::new_according_to(spawn.piece.shape, &free_board);
 
         let orientations = goal.piece.orientations_having_same_form();
@@ -622,7 +622,7 @@ pub(crate) mod moves64 {
     }
 
     pub(crate) fn can_reach_strictly_softdrop(rotation_system: &impl RotationSystem, goal: BlPlacement, board: &Board<u64>, spawn: BlPlacement) -> bool {
-        let free_board = FreeBoard::from(&board);
+        let free_board = FreeBoard::from(board);
         let free_piece_boards = FreePieceBoards::new_according_to(spawn.piece.shape, &free_board);
 
         fn can_reach(reachable_piece_boards: &ReachablePieceBoards, goal: BlPlacement) -> bool {
@@ -662,7 +662,7 @@ pub(crate) mod moves64 {
     }
 
     pub(crate) fn can_reach_harddrop(rotation_system: &impl RotationSystem, goal: BlPlacement, board: &Board<u64>, spawn: BlPlacement) -> bool {
-        let free_board = FreeBoard::from(&board);
+        let free_board = FreeBoard::from(board);
         let free_piece_boards = FreePieceBoards::new_according_to(spawn.piece.shape, &free_board);
 
         let reachable_piece_boards = gen_reachable_harddrop(&spawn, &free_piece_boards, rotation_system);
@@ -673,7 +673,7 @@ pub(crate) mod moves64 {
     }
 
     pub(crate) fn can_reach_strictly_harddrop(rotation_system: &impl RotationSystem, goal: BlPlacement, board: &Board<u64>, spawn: BlPlacement) -> bool {
-        let free_board = FreeBoard::from(&board);
+        let free_board = FreeBoard::from(board);
         let free_piece_boards = FreePieceBoards::new_according_to(spawn.piece.shape, &free_board);
 
         let reachable_piece_boards = gen_reachable_harddrop(&spawn, &free_piece_boards, rotation_system);

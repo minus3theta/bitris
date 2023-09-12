@@ -121,7 +121,7 @@ impl Board<u8> {
     /// Returns a new board after clearing lines.
     #[inline]
     pub fn after_clearing(&self) -> Self {
-        let mut board = self.clone();
+        let mut board = *self;
         board.clear_lines();
         board
     }
@@ -141,7 +141,7 @@ impl Board<u16> {
     /// Returns a new board after clearing lines.
     #[inline]
     pub fn after_clearing(&self) -> Self {
-        let mut board = self.clone();
+        let mut board = *self;
         board.clear_lines();
         board
     }
@@ -161,7 +161,7 @@ impl Board<u32> {
     /// Returns a new board after clearing lines.
     #[inline]
     pub fn after_clearing(&self) -> Self {
-        let mut board = self.clone();
+        let mut board = *self;
         board.clear_lines();
         board
     }
@@ -181,7 +181,7 @@ impl Board<u64> {
     /// Returns a new board after clearing lines.
     #[inline]
     pub fn after_clearing(&self) -> Self {
-        let mut board = self.clone();
+        let mut board = *self;
         board.clear_lines();
         board
     }
@@ -214,7 +214,7 @@ impl<T> fmt::Display for Board<T> where Board<T>: BoardOp {
                 str.push('\n')
             }
         }
-        write!(f, "(Board{}):\n{}", self.ceiling(), str.to_string())
+        write!(f, "(Board{}):\n{}", self.ceiling(), str)
     }
 }
 
