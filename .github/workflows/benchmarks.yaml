@@ -1,11 +1,17 @@
-on: [ pull_request ]
+on:
+  issue_comment:
+    types:
+      - created
 name: benchmark pull requests
 jobs:
   runBenchmark:
     name: run benchmarks
+    if: >
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/bench'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: boa-dev/criterion-compare-action@v3
         with:
           branchName: main
