@@ -259,19 +259,17 @@ mod tests {
         let piece = Piece::new(Shape::T, Orientation::North);
 
         let placement = piece.with(cc(4, 3));
-        assert_eq!(CcPlacement::from(placement), piece.with(cc(4, 3)));
+        assert_eq!(placement, piece.with(cc(4, 3)));
 
         let placement = piece.with(bl(4, 3));
         assert_eq!(CcPlacement::from(placement), piece.with(cc(5, 3)));
         assert_eq!(CcPlacement::from(&placement), piece.with(cc(5, 3)));
         assert_eq!(placement.to_cc_placement(), piece.with(cc(5, 3)));
-        assert_eq!((&placement).to_cc_placement(), piece.with(cc(5, 3)));
 
         let placement = piece.with(tr(4, 3));
         assert_eq!(CcPlacement::from(placement), piece.with(cc(3, 2)));
         assert_eq!(CcPlacement::from(&placement), piece.with(cc(3, 2)));
         assert_eq!(placement.to_cc_placement(), piece.with(cc(3, 2)));
-        assert_eq!((&placement).to_cc_placement(), piece.with(cc(3, 2)));
     }
 
     #[test]
@@ -344,14 +342,14 @@ mod tests {
         assert!(os.with(tr(5, 1)).place_on(&mut board));
         assert!(os.with(tr(7, 1)).place_on(&mut board));
 
-        assert!(!os.with(tr(8, 1)).can_place_on(&mut board));
-        assert!(os.with(tr(9, 1)).can_place_on(&mut board));
+        assert!(!os.with(tr(8, 1)).can_place_on(&board));
+        assert!(os.with(tr(9, 1)).can_place_on(&board));
 
-        assert!(!os.with(tr(8, 1)).is_in_free_space(&mut board));
-        assert!(os.with(tr(9, 1)).is_in_free_space(&mut board));
+        assert!(!os.with(tr(8, 1)).is_in_free_space(&board));
+        assert!(os.with(tr(9, 1)).is_in_free_space(&board));
 
-        assert!(!os.with(tr(9, 2)).is_landing(&mut board));
-        assert!(os.with(tr(9, 1)).is_landing(&mut board));
+        assert!(!os.with(tr(9, 2)).is_landing(&board));
+        assert!(os.with(tr(9, 1)).is_landing(&board));
 
         assert_eq!(
             os.with(tr(9, 1)).place_on_and_clear_lines(&mut board),

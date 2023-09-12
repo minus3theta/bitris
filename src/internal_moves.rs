@@ -739,7 +739,7 @@ pub(crate) mod moves64 {
         can_reach(&reachable_piece_boards, goal)
     }
 
-    pub(crate) fn all_moves_harddrop<'a>(
+    pub(crate) fn all_moves_harddrop(
         rotation_system: &impl RotationSystem,
         board: &Board<u64>,
         spawn: BlPlacement,
@@ -757,7 +757,7 @@ pub(crate) mod moves64 {
         }
     }
 
-    pub(crate) fn minimized_moves_harddrop<'a>(
+    pub(crate) fn minimized_moves_harddrop(
         rotation_system: &impl RotationSystem,
         board: &Board<u64>,
         spawn: BlPlacement,

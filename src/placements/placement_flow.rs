@@ -50,13 +50,15 @@ impl PlacementFlow {
         self.placements.len()
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     /// Returns the board after all have been placed.
     pub fn board_all_placed(&self) -> Option<Board64> {
         let mut board = self.initial_board.after_clearing();
         for placement in &self.placements {
-            if placement.place_on_and_clear_lines(&mut board).is_none() {
-                return None;
-            }
+            placement.place_on_and_clear_lines(&mut board)?;
         }
         Some(board)
     }

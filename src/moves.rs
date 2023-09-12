@@ -22,12 +22,14 @@ where
     pub allow_move: AllowMove,
 }
 
-impl<'a> MoveRules<'a, SrsKickTable> {
+impl<'a> Default for MoveRules<'a, SrsKickTable> {
     #[inline]
-    pub fn default() -> Self {
+    fn default() -> Self {
         Self::srs(AllowMove::Softdrop)
     }
+}
 
+impl<'a> MoveRules<'a, SrsKickTable> {
     #[inline]
     pub fn srs(allow_move: AllowMove) -> Self {
         Self {
@@ -326,7 +328,7 @@ pub mod srs {
                 SrsKickTable.iter_kicks(Piece::new(Shape::T, Orientation::North), Rotation::Cw);
             assert_equal(
                 kicks.map(|it| it.offset),
-                vec![dd(0, 0), dd(-1, 0), dd(-1, 1), dd(0, -2), dd(-1, -2)].into_iter(),
+                vec![dd(0, 0), dd(-1, 0), dd(-1, 1), dd(0, -2), dd(-1, -2)],
             );
         }
 
@@ -357,8 +359,7 @@ pub mod srs {
                     test_index: 4,
                     kick: *SrsKickTable
                         .iter_kicks(placement.piece, rotation)
-                        .skip(4)
-                        .next()
+                        .nth(4)
                         .unwrap(),
                     destination: CcPlacement {
                         piece: piece!(TE),
@@ -382,8 +383,7 @@ pub mod srs {
                     test_index: 2,
                     kick: *SrsKickTable
                         .iter_kicks(placement.piece, rotation)
-                        .skip(2)
-                        .next()
+                        .nth(2)
                         .unwrap(),
                     destination: CcPlacement {
                         piece: piece!(ZS),

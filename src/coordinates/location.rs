@@ -99,18 +99,15 @@ mod tests {
         assert_eq!(Location::from(position), xy(5, 5));
         assert_eq!(Location::from(&position), xy(5, 5));
         assert_eq!(position.to_location(), xy(5, 5));
-        assert_eq!((&position).to_location(), xy(5, 5));
 
         let position = bl(5, 5);
         assert_eq!(Location::from(position), xy(5, 5));
         assert_eq!(Location::from(&position), xy(5, 5));
         assert_eq!(position.to_location(), xy(5, 5));
-        assert_eq!((&position).to_location(), xy(5, 5));
 
         let position = tr(5, 5);
         assert_eq!(Location::from(position), xy(5, 5));
         assert_eq!(Location::from(&position), xy(5, 5));
         assert_eq!(position.to_location(), xy(5, 5));
-        assert_eq!((&position).to_location(), xy(5, 5));
     }
 }
