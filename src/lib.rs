@@ -1,5 +1,5 @@
 #[cfg(test)]
-use rstest_reuse;
+extern crate rstest_reuse;
 
 pub use kicks::*;
 pub use moves::*;
