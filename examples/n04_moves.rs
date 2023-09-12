@@ -4,10 +4,11 @@ use bitris::macros::piece;
 use bitris::prelude::*;
 
 fn main() {
-    use Shape::*;
     use Orientation::*;
+    use Shape::*;
 
-    let board64: Board64 = Board64::from_str("
+    let board64: Board64 = Board64::from_str(
+        "
             ..........
             ......####
             .....#####
@@ -15,7 +16,9 @@ fn main() {
             ...#######
             ..########
             .#########
-        ").expect("Failed to create a board");
+        ",
+    )
+    .expect("Failed to create a board");
 
     let spawn = piece!(IN).with(cc(4, 20)).to_bl_placement();
 

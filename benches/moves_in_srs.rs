@@ -12,7 +12,6 @@ struct MovesBenchmarkData {
     expected: Vec<(Shape, usize)>,
 }
 
-
 #[inline(always)]
 fn all_moves(data: &MovesBenchmarkData) {
     let board = Board64::from(data.board);
@@ -33,7 +32,6 @@ fn minimized_moves(data: &MovesBenchmarkData) {
     }
 }
 
-
 fn bench_all_moves(c: &mut Criterion) {
     use Shape::*;
     let mirror = |board: Board64| {
@@ -47,7 +45,15 @@ fn bench_all_moves(c: &mut Criterion) {
             id: "empty".to_string(),
             board: Board64::default(),
             spawn: cc(4, 20),
-            expected: vec![(T, 34), (I, 34), (L, 34), (J, 34), (S, 34), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 34),
+                (I, 34),
+                (L, 34),
+                (J, 34),
+                (S, 34),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "pco".to_string(),
@@ -57,9 +63,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 ##....####\
                 ##...#####\
                 ##....####\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 35), (I, 35), (L, 35), (J, 35), (S, 34), (Z, 36), (O, 36)],
+            expected: vec![
+                (T, 35),
+                (I, 35),
+                (L, 35),
+                (J, 35),
+                (S, 34),
+                (Z, 36),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-pco".to_string(),
@@ -69,9 +85,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 ##....####\
                 ##...#####\
                 ##....####\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 35), (I, 35), (L, 35), (J, 35), (S, 36), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 35),
+                (I, 35),
+                (L, 35),
+                (J, 35),
+                (S, 36),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "loop".to_string(),
@@ -96,9 +123,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 #.######.#\
                 #........#\
                 .#########\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 35), (I, 108), (L, 35), (J, 36), (S, 34), (Z, 36), (O, 36)],
+            expected: vec![
+                (T, 35),
+                (I, 108),
+                (L, 35),
+                (J, 36),
+                (S, 34),
+                (Z, 36),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-loop".to_string(),
@@ -123,9 +160,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 #.######.#\
                 #........#\
                 .#########\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 35), (I, 108), (L, 36), (J, 35), (S, 36), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 35),
+                (I, 108),
+                (L, 36),
+                (J, 35),
+                (S, 36),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "hatetris".to_string(),
@@ -145,9 +193,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 ##....####\
                 ###..#####\
                 .##.#.###.\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 72), (I, 58), (L, 65), (J, 65), (S, 67), (Z, 66), (O, 36)],
+            expected: vec![
+                (T, 72),
+                (I, 58),
+                (L, 65),
+                (J, 65),
+                (S, 67),
+                (Z, 66),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-hatetris".to_string(),
@@ -167,9 +225,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 ##....####\
                 ###..#####\
                 .##.#.###.\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 72), (I, 58), (L, 65), (J, 65), (S, 66), (Z, 67), (O, 36)],
+            expected: vec![
+                (T, 72),
+                (I, 58),
+                (L, 65),
+                (J, 65),
+                (S, 66),
+                (Z, 67),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "side-4-wide".to_string(),
@@ -195,9 +264,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 ....######\
                 ....######\
                 .#########\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 34), (I, 34), (L, 34), (J, 34), (S, 34), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 34),
+                (I, 34),
+                (L, 34),
+                (J, 34),
+                (S, 34),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-side-4-wide".to_string(),
@@ -223,9 +302,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 ....######\
                 ....######\
                 .#########\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 34), (I, 34), (L, 34), (J, 34), (S, 34), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 34),
+                (I, 34),
+                (L, 34),
+                (J, 34),
+                (S, 34),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "center-4-wide".to_string(),
@@ -251,9 +341,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 ###....###\
                 ###....###\
                 ###.######\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 34), (I, 34), (L, 34), (J, 34), (S, 34), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 34),
+                (I, 34),
+                (L, 34),
+                (J, 34),
+                (S, 34),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-center-4-wide".to_string(),
@@ -279,9 +379,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 ###....###\
                 ###....###\
                 ###.######\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 34), (I, 34), (L, 34), (J, 34), (S, 34), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 34),
+                (I, 34),
+                (L, 34),
+                (J, 34),
+                (S, 34),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "dt".to_string(),
@@ -295,9 +406,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 #...######\
                 ##.#######\
                 ##.#######\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 39), (I, 34), (L, 35), (J, 37), (S, 34), (Z, 40), (O, 36)],
+            expected: vec![
+                (T, 39),
+                (I, 34),
+                (L, 35),
+                (J, 37),
+                (S, 34),
+                (Z, 40),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-dt".to_string(),
@@ -311,9 +432,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 #...######\
                 ##.#######\
                 ##.#######\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 39), (I, 34), (L, 37), (J, 35), (S, 40), (Z, 34), (O, 36)],
+            expected: vec![
+                (T, 39),
+                (I, 34),
+                (L, 37),
+                (J, 35),
+                (S, 40),
+                (Z, 34),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "rotating-early".to_string(),
@@ -339,9 +471,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 .........#\
                 .........#\
                 .........#\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 73), (I, 70), (L, 72), (J, 69), (S, 70), (Z, 70), (O, 36)],
+            expected: vec![
+                (T, 73),
+                (I, 70),
+                (L, 72),
+                (J, 69),
+                (S, 70),
+                (Z, 70),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-rotating-early".to_string(),
@@ -367,9 +509,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 .........#\
                 .........#\
                 .........#\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 73), (I, 70), (L, 69), (J, 72), (S, 70), (Z, 70), (O, 36)],
+            expected: vec![
+                (T, 73),
+                (I, 70),
+                (L, 69),
+                (J, 72),
+                (S, 70),
+                (Z, 70),
+                (O, 36),
+            ],
         },
         MovesBenchmarkData {
             id: "randomize".to_string(),
@@ -395,9 +548,19 @@ fn bench_all_moves(c: &mut Criterion) {
                 .........#\
                 .#..#.#.#.\
                 ..........\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 134), (I, 138), (L, 137), (J, 151), (S, 132), (Z, 151), (O, 44)],
+            expected: vec![
+                (T, 134),
+                (I, 138),
+                (L, 137),
+                (J, 151),
+                (S, 132),
+                (Z, 151),
+                (O, 44),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-randomize".to_string(),
@@ -423,9 +586,20 @@ fn bench_all_moves(c: &mut Criterion) {
                 .........#\
                 .#..#.#.#.\
                 ..........\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 134), (I, 139), (L, 151), (J, 137), (S, 151), (Z, 132), (O, 44)],
+            expected: vec![
+                (T, 134),
+                (I, 139),
+                (L, 151),
+                (J, 137),
+                (S, 151),
+                (Z, 132),
+                (O, 44),
+            ],
         },
     ];
 
@@ -460,7 +634,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ##....####\
                 ##...#####\
                 ##....####\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 35), (I, 18), (L, 35), (J, 35), (S, 17), (Z, 18), (O, 9)],
         },
@@ -472,7 +648,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ##....####\
                 ##...#####\
                 ##....####\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 35), (I, 18), (L, 35), (J, 35), (S, 18), (Z, 17), (O, 9)],
         },
@@ -499,7 +678,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 #.######.#\
                 #........#\
                 .#########\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 35), (I, 54), (L, 35), (J, 36), (S, 17), (Z, 18), (O, 9)],
         },
@@ -526,7 +707,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 #.######.#\
                 #........#\
                 .#########\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 35), (I, 54), (L, 36), (J, 35), (S, 18), (Z, 17), (O, 9)],
         },
@@ -548,7 +732,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ##....####\
                 ###..#####\
                 .##.#.###.\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 72), (I, 30), (L, 65), (J, 65), (S, 34), (Z, 33), (O, 9)],
         },
@@ -570,7 +756,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ##....####\
                 ###..#####\
                 .##.#.###.\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 72), (I, 30), (L, 65), (J, 65), (S, 33), (Z, 34), (O, 9)],
         },
@@ -598,7 +787,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ....######\
                 ....######\
                 .#########\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 34), (I, 17), (L, 34), (J, 34), (S, 17), (Z, 17), (O, 9)],
         },
@@ -626,7 +817,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ....######\
                 ....######\
                 .#########\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 34), (I, 17), (L, 34), (J, 34), (S, 17), (Z, 17), (O, 9)],
         },
@@ -654,7 +848,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ###....###\
                 ###....###\
                 ###.######\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 34), (I, 17), (L, 34), (J, 34), (S, 17), (Z, 17), (O, 9)],
         },
@@ -682,7 +878,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 ###....###\
                 ###....###\
                 ###.######\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 34), (I, 17), (L, 34), (J, 34), (S, 17), (Z, 17), (O, 9)],
         },
@@ -698,7 +897,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 #...######\
                 ##.#######\
                 ##.#######\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 39), (I, 17), (L, 35), (J, 37), (S, 17), (Z, 20), (O, 9)],
         },
@@ -714,7 +915,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 #...######\
                 ##.#######\
                 ##.#######\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 39), (I, 17), (L, 37), (J, 35), (S, 20), (Z, 17), (O, 9)],
         },
@@ -742,7 +946,9 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 .........#\
                 .........#\
                 .........#\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 73), (I, 35), (L, 72), (J, 69), (S, 35), (Z, 35), (O, 9)],
         },
@@ -770,7 +976,10 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 .........#\
                 .........#\
                 .........#\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
             expected: vec![(T, 73), (I, 35), (L, 69), (J, 72), (S, 35), (Z, 35), (O, 9)],
         },
@@ -798,9 +1007,19 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 .........#\
                 .#..#.#.#.\
                 ..........\
-            ").unwrap(),
+            ",
+            )
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 134), (I, 73), (L, 137), (J, 151), (S, 68), (Z, 78), (O, 11)],
+            expected: vec![
+                (T, 134),
+                (I, 73),
+                (L, 137),
+                (J, 151),
+                (S, 68),
+                (Z, 78),
+                (O, 11),
+            ],
         },
         MovesBenchmarkData {
             id: "mirrored-randomize".to_string(),
@@ -826,9 +1045,20 @@ fn bench_minimized_moves(c: &mut Criterion) {
                 .........#\
                 .#..#.#.#.\
                 ..........\
-            ").map(mirror).unwrap(),
+            ",
+            )
+            .map(mirror)
+            .unwrap(),
             spawn: cc(4, 20),
-            expected: vec![(T, 134), (I, 74), (L, 151), (J, 137), (S, 78), (Z, 68), (O, 11)],
+            expected: vec![
+                (T, 134),
+                (I, 74),
+                (L, 151),
+                (J, 137),
+                (S, 78),
+                (Z, 68),
+                (O, 11),
+            ],
         },
     ];
 
@@ -839,7 +1069,6 @@ fn bench_minimized_moves(c: &mut Criterion) {
         });
     });
 }
-
 
 criterion_group!(benches, bench_all_moves, bench_minimized_moves);
 criterion_main!(benches);

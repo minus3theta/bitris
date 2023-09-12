@@ -8,6 +8,7 @@ pub trait With<T> {
 /// A collection of statements that instruct generation to continue/stop.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Default, Debug)]
 pub enum GenerateInstruction {
-    #[default] Continue,
+    #[default]
+    Continue,
     Stop,
 }

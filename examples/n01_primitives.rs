@@ -3,7 +3,10 @@ use bitris::prelude::*;
 
 fn main() {
     // Make pieces
-    let piece1 = Piece { shape: Shape::T, orientation: Orientation::North };
+    let piece1 = Piece {
+        shape: Shape::T,
+        orientation: Orientation::North,
+    };
     let piece2 = Piece::new(Shape::T, Orientation::North);
     let piece3 = Shape::T.with(Orientation::North);
     let piece4 = piece!(TN);
@@ -19,7 +22,10 @@ fn main() {
         piece: Piece::new(Shape::T, Orientation::North),
         position: CcPosition { cx: 2, cy: 2 },
     };
-    let cc2 = CcPlacement { piece: piece!(TN), position: cc(2, 2) };
+    let cc2 = CcPlacement {
+        piece: piece!(TN),
+        position: cc(2, 2),
+    };
     assert_eq!(cc1, cc2);
 
     // The placements can be interconverted.
@@ -32,7 +38,10 @@ fn main() {
         piece: Piece::new(Shape::T, Orientation::North),
         position: BlPosition { lx: 1, by: 2 },
     };
-    let bl2 = BlPlacement { piece: piece!(TN), position: bl(1, 2) };
+    let bl2 = BlPlacement {
+        piece: piece!(TN),
+        position: bl(1, 2),
+    };
     assert_eq!(bl1, bl2);
     assert_eq!(bl1.to_cc_placement(), cc1);
     assert_eq!(cc1.to_bl_placement(), bl1);
@@ -46,7 +55,10 @@ fn main() {
         piece: Piece::new(Shape::T, Orientation::North),
         position: TrPosition { rx: 3, ty: 3 },
     };
-    let tr2 = TrPlacement { piece: piece!(TN), position: tr(3, 3) };
+    let tr2 = TrPlacement {
+        piece: piece!(TN),
+        position: tr(3, 3),
+    };
     assert_eq!(tr1, tr2);
     assert_eq!(tr1.to_cc_placement(), cc1);
     assert_eq!(cc1.to_tr_placement(), tr1);

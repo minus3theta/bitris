@@ -8,19 +8,8 @@ pub use traits::*;
 
 #[doc(hidden)]
 pub mod prelude {
-    pub use crate::{
-        kicks::*,
-        moves::*,
-        rotation::*,
-        traits::*,
-    };
-    pub use crate::{
-        boards::*,
-        coordinates::*,
-        pieces::*,
-        placements::*,
-        srs::SrsKickTable,
-    };
+    pub use crate::{boards::*, coordinates::*, pieces::*, placements::*, srs::SrsKickTable};
+    pub use crate::{kicks::*, moves::*, rotation::*, traits::*};
 }
 
 // Exposed modules

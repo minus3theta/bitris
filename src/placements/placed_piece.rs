@@ -2,7 +2,7 @@ use itertools::Itertools;
 use tinyvec::ArrayVec;
 
 use crate::boards::Lines;
-use crate::coordinates::{Location, xy};
+use crate::coordinates::{xy, Location};
 use crate::pieces::Piece;
 use crate::placements::BlPlacement;
 
@@ -47,17 +47,22 @@ impl PlacedPiece {
     #[inline]
     pub fn new_with_interception(placement: BlPlacement, interception: Lines) -> Self {
         let using_rows = placement.using_rows().intercept(interception);
-        PlacedPiece::new(placement.piece, placement.position.lx as u8, using_rows.ys_iter().collect())
+        PlacedPiece::new(
+            placement.piece,
+            placement.position.lx as u8,
+            using_rows.ys_iter().collect(),
+        )
     }
 
     /// Returns a vec containing all placed pieces within the height.
     /// Only one of the different orientations in the same form is included.
-    pub fn make_canonical_all_iter(height: usize) -> impl Iterator<Item=Self> {
+    pub fn make_canonical_all_iter(height: usize) -> impl Iterator<Item = Self> {
         Piece::all_iter()
             .filter(|piece| piece.canonical().is_none())
             .flat_map(move |piece| {
                 let piece_blocks = piece.to_piece_blocks();
-                (0..height as u8).combinations(piece_blocks.height as usize)
+                (0..height as u8)
+                    .combinations(piece_blocks.height as usize)
                     .map(|ys| ys.into_iter().sorted().collect())
                     .flat_map(move |ys: ArrayVec<[u8; 4]>| {
                         let max = 10 - piece_blocks.width as u8 + 1;
@@ -81,15 +86,24 @@ impl PlacedPiece {
     /// Returns the top right location of the piece.
     #[inline]
     pub fn top_right(&self) -> Location {
-        xy(self.lx as i32 + self.piece.width() as i32 - 1, *self.ys.last().unwrap() as i32)
+        xy(
+            self.lx as i32 + self.piece.width() as i32 - 1,
+            *self.ys.last().unwrap() as i32,
+        )
     }
 
     #[inline]
     pub fn locations(&self) -> [Location; 4] {
         let piece_blocks = self.piece.to_piece_blocks();
-        piece_blocks.offsets
-            .map(|offset| { offset - piece_blocks.bottom_left })
-            .map(|offset| { Location::new(self.lx as i32 + offset.dx, self.ys[offset.dy as usize] as i32) })
+        piece_blocks
+            .offsets
+            .map(|offset| offset - piece_blocks.bottom_left)
+            .map(|offset| {
+                Location::new(
+                    self.lx as i32 + offset.dx,
+                    self.ys[offset.dy as usize] as i32,
+                )
+            })
     }
 
     /// Returns blank rows between the separated pieces.
@@ -103,15 +117,19 @@ impl PlacedPiece {
     /// ```
     #[inline]
     pub fn intercepted_rows(&self) -> Lines {
-        self.ys.iter()
+        self.ys
+            .iter()
             .skip(1)
-            .fold((self.ys[0] as u32, Lines::blank()), |(prev_y, lines), &y| {
-                let y = y as u32;
-                let current_using_row = Lines::filled_up_to(y);
-                let prev_using_row = Lines::filled_up_to(prev_y + 1);
-                let intercepted = current_using_row ^ prev_using_row;
-                (y, lines | intercepted)
-            })
+            .fold(
+                (self.ys[0] as u32, Lines::blank()),
+                |(prev_y, lines), &y| {
+                    let y = y as u32;
+                    let current_using_row = Lines::filled_up_to(y);
+                    let prev_using_row = Lines::filled_up_to(prev_y + 1);
+                    let intercepted = current_using_row ^ prev_using_row;
+                    (y, lines | intercepted)
+                },
+            )
             .1
     }
 
@@ -126,11 +144,11 @@ impl PlacedPiece {
     /// ```
     #[inline]
     pub fn using_rows(&self) -> Lines {
-        self.ys.iter()
+        self.ys
+            .iter()
             .fold(Lines::blank(), |lines, &y| lines | Lines::new_at(y))
     }
 }
-
 
 #[cfg(test)]
 mod tests {

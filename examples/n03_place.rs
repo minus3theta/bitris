@@ -18,10 +18,13 @@ fn main() {
     let lines_cleared = o_north.with(bl(6, 0)).place_on_and_clear_lines(&mut board);
     assert_eq!(lines_cleared, Some(Lines::blank()));
 
-    assert_eq!(format!("{}", board), "(Board64):
+    assert_eq!(
+        format!("{}", board),
+        "(Board64):
 ..........
 ########..
-########..");
+########.."
+    );
 
     let lines_cleared = o_north.with(bl(8, 0)).place_on_and_clear_lines(&mut board);
     assert_eq!(lines_cleared, Some(Lines::new(0b11)));
@@ -30,6 +33,8 @@ fn main() {
     }
 
     // Access off board
-    let lines_cleared = o_north.with(bl(-1, -1)).place_on_and_clear_lines(&mut board);
+    let lines_cleared = o_north
+        .with(bl(-1, -1))
+        .place_on_and_clear_lines(&mut board);
     assert_eq!(lines_cleared, None);
 }

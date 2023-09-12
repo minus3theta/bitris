@@ -1,11 +1,11 @@
 use std::{fmt, ops};
 
-use crate::{Rotate, Rotation};
 use crate::boards::{BoardOp, Lines};
 use crate::coordinates::{Location, Offset, TrPosition};
 use crate::internal_macros::{add_member_for_from, forward_ref_from, forward_ref_op};
 use crate::pieces::{Orientation, Piece, PieceBlocks, PieceBlocksFactory, Shape};
 use crate::placements::{BlPlacement, CcPlacement, PlacedPiece};
+use crate::{Rotate, Rotation};
 
 /// The position to be placed, based on the top-right of the piece.
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Default)]
@@ -101,11 +101,9 @@ impl TrPlacement {
     /// ```
     #[inline]
     pub fn canonical(self) -> Option<Self> {
-        self.piece.canonical().map(|piece| {
-            Self {
-                piece,
-                position: self.position,
-            }
+        self.piece.canonical().map(|piece| Self {
+            piece,
+            position: self.position,
         })
     }
 
@@ -237,7 +235,6 @@ forward_ref_from!(TrPlacement, from TrPlacement);
 add_member_for_from!(BlPlacement, to_bl_placement, to TrPlacement);
 add_member_for_from!(CcPlacement, to_cc_placement, to TrPlacement);
 
-
 #[cfg(test)]
 mod tests {
     use rstest::*;
@@ -307,16 +304,24 @@ mod tests {
     }
 
     #[fixture]
-    pub fn board8() -> Board8 { Board8::blank() }
+    pub fn board8() -> Board8 {
+        Board8::blank()
+    }
 
     #[fixture]
-    pub fn board16() -> Board16 { Board16::blank() }
+    pub fn board16() -> Board16 {
+        Board16::blank()
+    }
 
     #[fixture]
-    pub fn board32() -> Board32 { Board32::blank() }
+    pub fn board32() -> Board32 {
+        Board32::blank()
+    }
 
     #[fixture]
-    pub fn board64() -> Board64 { Board64::blank() }
+    pub fn board64() -> Board64 {
+        Board64::blank()
+    }
 
     #[template]
     #[rstest]
@@ -348,14 +353,19 @@ mod tests {
         assert!(!os.with(tr(9, 2)).is_landing(&mut board));
         assert!(os.with(tr(9, 1)).is_landing(&mut board));
 
-        assert_eq!(os.with(tr(9, 1)).place_on_and_clear_lines(&mut board), Some(Lines::new(0b11)));
+        assert_eq!(
+            os.with(tr(9, 1)).place_on_and_clear_lines(&mut board),
+            Some(Lines::new(0b11))
+        );
         assert_eq!(board.count_blocks(), 0);
     }
 
     #[test]
     fn to_placed_piece() {
         assert_eq!(
-            piece!(TW).with(tr(5, 5)).with_interception(Lines::new(0b01010000)),
+            piece!(TW)
+                .with(tr(5, 5))
+                .with_interception(Lines::new(0b01010000)),
             PlacedPiece::new(piece!(TW), 4, array_vec![3, 5, 7]),
         );
     }

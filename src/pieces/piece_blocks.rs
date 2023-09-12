@@ -1,7 +1,7 @@
-use crate::{Rotate, Rotation};
-use crate::coordinates::{CcPosition, dd, Location, Offset};
+use crate::coordinates::{dd, CcPosition, Location, Offset};
 use crate::internal_macros::add_member_for_from;
 use crate::pieces::{Orientation, Piece, Shape};
+use crate::{Rotate, Rotation};
 
 /// The offsets of blocks that make up a piece. Usually, you should obtain it from `PieceBlocksFactory`.
 ///
@@ -123,7 +123,6 @@ impl PieceBlocks {
 
 add_member_for_from!(Piece, piece, to PieceBlocks);
 
-
 /// Default piece blocks factory to generate Tetrominoes.
 #[derive(Copy, Clone, Hash, Debug, Default)]
 pub struct PieceBlocksFactory;
@@ -172,7 +171,6 @@ impl From<Piece> for PieceBlocks {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use std::mem::size_of;
@@ -184,16 +182,24 @@ mod tests {
     use crate::prelude::*;
 
     #[fixture]
-    pub fn board8() -> Board8 { Board8::blank() }
+    pub fn board8() -> Board8 {
+        Board8::blank()
+    }
 
     #[fixture]
-    pub fn board16() -> Board16 { Board16::blank() }
+    pub fn board16() -> Board16 {
+        Board16::blank()
+    }
 
     #[fixture]
-    pub fn board32() -> Board32 { Board32::blank() }
+    pub fn board32() -> Board32 {
+        Board32::blank()
+    }
 
     #[fixture]
-    pub fn board64() -> Board64 { Board64::blank() }
+    pub fn board64() -> Board64 {
+        Board64::blank()
+    }
 
     #[test]
     fn piece_blocks_works() {

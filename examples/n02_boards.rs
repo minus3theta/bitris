@@ -16,13 +16,16 @@ fn main() {
     assert_eq!(board64.ceiling(), 64);
 
     // Boards can be created from strings.
-    let board64: Board64 = Board64::from_str("
+    let board64: Board64 = Board64::from_str(
+        "
             ..........
             ####....##
             ####...###
             ####..####
             ####...###
-        ").expect("Failed to create a board");
+        ",
+    )
+    .expect("Failed to create a board");
     assert_eq!(board64.count_blocks(), 28);
     assert_eq!(board64.well_top(), 4);
 
