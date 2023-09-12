@@ -385,7 +385,7 @@ pub(crate) mod moves64 {
             to: usize,
             (dx, dy): (i32, usize),
             (start, end): (usize, usize),
-            (forward_op, backward_op): (fn(u64, usize) -> u64, fn(u64, usize) -> u64),
+            (forward_op, backward_op): (impl Fn(u64, usize) -> u64, impl Fn(u64, usize) -> u64),
         ) {
             for x in start..end {
                 let tx = (x as i32 + dx) as usize;
