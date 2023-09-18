@@ -2,6 +2,8 @@ use std::cmp;
 use std::fmt;
 use std::str::FromStr;
 
+use thiserror::Error;
+
 use crate::boards::Lines;
 use crate::coordinates::{xy, Location};
 
@@ -226,25 +228,14 @@ where
 }
 
 /// A collection of errors that occur during board creation.
-#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[derive(Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash, Debug, Error)]
 pub enum BoardFromStrError {
-    /// args: (invalid_char)
+    #[error("`{0}` is invalid")]
     InvalidCharacter(char),
-    /// args: (width)
+    #[error("total blocks is mismatched width: {0}")]
     MismatchedWidth(u32),
-    /// args: (ceiling)
+    #[error("exceed board ceiling: ceiling={0}")]
     ExceedBoardCeiling(u32),
-}
-
-impl fmt::Display for BoardFromStrError {
-    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use BoardFromStrError::*;
-        match *self {
-            InvalidCharacter(ch) => write!(fmt, "`{}` is invalid", ch),
-            MismatchedWidth(width) => write!(fmt, "total blocks is mismatched width: {}", width),
-            ExceedBoardCeiling(ceiling) => write!(fmt, "exceed board ceiling: ceiling={}", ceiling),
-        }
-    }
 }
 
 impl<T> FromStr for Board<T>
